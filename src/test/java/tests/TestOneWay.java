@@ -3,10 +3,12 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 
 import steps.SearchOneWay;
+import steps.StepsResultPage;
 
 
 public class TestOneWay {
 	private SearchOneWay step;
+	private StepsResultPage stepic;
 	private final String DESTINATION1 = "Ã»Õ— ";
 	private final String DESTINATION2 = "–»√¿";
 	private final String text = "support@belavia.by";
@@ -18,18 +20,32 @@ public class TestOneWay {
 		step.initBrowser();
 	}
 	
-	@Test(groups = {"openPage"}, description = "check needed site")
+	@Test(groups = {"on"}, description = "check needed site")
 	public void testMainPage() {
-		Assert.assertEquals(text.trim().toLowerCase(), step.getPageName());
+		step.openMainPage();
+		String str= step.getPageName();
+		Assert.assertEquals(text.trim().toLowerCase(), str);
 	}
 
-	@AfterGroups(groups = {"openPage"}, description = "Fill destination")
+	@AfterGroups(groups = {"on"}, description = "Fill destination")
 	public void oneCanLogin() {
 		step.fillDestination(DESTINATION1, DESTINATION2);
-//		Assert.assertTrue(step.isLoggedIn(DESTINATION1));
+		step.chooseDate();
+		step.clickButtonSearch();
 	}
 	
-//	@AfterMethod(description = "Stop Browser")
+	@AfterClass
+	public void searchTicketsResSet() {
+		stepic.searchTickets();
+	}
+	
+//	@AfterGroups(groups = {"on"}, description = "click on button")
+//	public void buttonSearch() {
+//		step.clickButtonSearch();
+//	}
+
+	
+//	@AfterTest(description = "Stop Browser")
 //	public void stopBrowser() {
 //		step.closeDriver();
 //	}
