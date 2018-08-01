@@ -25,7 +25,7 @@ public class MainPage extends Page {
 	private final By getPreviousCalendarMonth = By.xpath("//div[@id='calendar']/div/div[1]/div/a");
 	private final By getNextCalendarMonth = By.xpath("//div[@id='calendar']/div/div[2]/div/a");
 	private final By getDayOfMonth = By.xpath("//*[@id='calendar']/div/div[1]/table/tbody/tr[1]/td[3]/a");
-	private final By getFooterNameSite = By.xpath("//div[@id='footer']/div[2]/div/div[2]/div[2]");
+	private final By getSupportLink = By.xpath("//div[@id='footer']/div[1]/div/div[1]/div[2]/a");
 
 	public MainPage(WebDriver driver) {
 		super(driver);
@@ -39,14 +39,20 @@ public class MainPage extends Page {
 	}
 	
 	public String getSiteName() {
-		return driver.findElement(getFooterNameSite).getText();
+		return driver.findElement(getSupportLink).getText();
 	}
 	
 	public void chooseSearchigTab() {
-		WebElement el = driver.findElement(tabLocator);
-		el.click();
-		driver.findElement(inputFromLocator).sendKeys(fromDestination);
-		driver.findElement(inputToLocator).sendKeys(toDestination);
+		driver.findElement(tabLocator).click();;
+		WebElement elFrom = driver.findElement(inputFromLocator);
+		elFrom.click();
+		elFrom.sendKeys(fromDestination);
+		WebElement elTo = driver.findElement(inputToLocator);
+		elTo.click();
+		elTo.sendKeys(toDestination);
+	}
+	
+	public void chooseDestination() {
 		driver.findElement(radioButton).click();
 	}
 	
