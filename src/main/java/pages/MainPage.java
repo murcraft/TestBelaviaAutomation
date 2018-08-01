@@ -9,12 +9,12 @@ import org.openqa.selenium.support.PageFactory;
 public class MainPage extends Page {
 	private final Logger logger = LogManager.getRootLogger();
 	private final String URL = "https://belavia.by/";
-	private final String fromDestination = "ÌÈÍÑÊ";
-	private final String toDestination = "ÐÈÃÀ";
+	private final String fromDestination = "ï¿½ï¿½ï¿½ï¿½ï¿½";
+	private final String toDestination = "ï¿½ï¿½ï¿½ï¿½";
 	
 	private final By tabLocator = By.cssSelector("#navtab > ul > li:nth-child(1) > a");
-	private final By inputFromLocator = By.xpath("//input[@id='OriginLocation_Combobox']");
-	private final By inputToLocator = By.xpath("//input[@id='DestinationLocation_Combobox']");
+	private final By labelFromLocator = By.xpath("//div[@id='ibe']/form/div[1]/div[1]/div/label");
+	private final By labelToLocator = By.xpath("//div[@id='ibe']/form/div[1]/div[2]/div/label");
 	private final By buttonFind = By.xpath("//button[@class='button btn-large btn btn-b2-green ui-corner-all']");
 	private final By radioButton = By.xpath("//div[@id='step-2']/div[1]/div/label[1]");
 	private final By inputDateTo = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
@@ -44,10 +44,10 @@ public class MainPage extends Page {
 	
 	public void chooseSearchigTab() {
 		driver.findElement(tabLocator).click();;
-		WebElement elFrom = driver.findElement(inputFromLocator);
+		WebElement elFrom = driver.findElement(labelFromLocator);
 		elFrom.click();
 		elFrom.sendKeys(fromDestination);
-		WebElement elTo = driver.findElement(inputToLocator);
+		WebElement elTo = driver.findElement(labelToLocator);
 		elTo.click();
 		elTo.sendKeys(toDestination);
 	}

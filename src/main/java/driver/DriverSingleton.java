@@ -16,7 +16,7 @@ public class DriverSingleton {
 //    private static final String WEBDRIVER_CHROME = manager.wb_d;
 //    private static final String CHROME_PATH = manager.wb_p;
     private static final String WEBDRIVER_CHROME = "webdriver.chrome.driver";
-    private static final String CHROME_PATH = "C:\\Program Files\\chromedriver.exe";
+    private static final String CHROME_PATH = "../chromedriver";
     
     private DriverSingleton(){};
 
