@@ -1,4 +1,4 @@
-package steps;
+package by.htp.kyzniatsova.steps;
 
 public abstract class AbstractStep {
 	

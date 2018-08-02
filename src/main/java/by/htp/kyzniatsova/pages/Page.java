@@ -1,4 +1,4 @@
-package pages;
+package by.htp.kyzniatsova.pages;
 
 import org.openqa.selenium.WebDriver;
 

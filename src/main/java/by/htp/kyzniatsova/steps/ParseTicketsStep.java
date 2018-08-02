@@ -1,12 +1,12 @@
-package steps;
+package by.htp.kyzniatsova.steps;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-import pages.SearchResultsPage;
+import by.htp.kyzniatsova.pages.SearchResultsPage;
 
-public class StepsResultPage extends AbstractStep {
+public class ParseTicketsStep extends AbstractStep {
 	
 	private WebDriver driver;
 
@@ -20,8 +20,6 @@ public class StepsResultPage extends AbstractStep {
 
 	@Override
 	public void closeDriver() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void searchTickets() {

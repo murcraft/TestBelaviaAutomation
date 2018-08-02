@@ -2,13 +2,13 @@ package tests;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import steps.SearchOneWay;
-import steps.StepsResultPage;
+import by.htp.kyzniatsova.steps.SearchOneWayStep;
+import by.htp.kyzniatsova.steps.ParseTicketsStep;
 
 
 public class TestOneWay {
-	private SearchOneWay step;
-	private StepsResultPage stepic;
+	private SearchOneWayStep step;
+	private ParseTicketsStep stepic;
 	private final String DESTINATION1 = "Ã»Õ— ";
 	private final String DESTINATION2 = "–»√¿";
 	private final String text = "support@belavia.by";
@@ -16,34 +16,36 @@ public class TestOneWay {
 
 	@BeforeMethod(description = "Init browser")
 	public void setUp() {
-		step = new SearchOneWay();
+		step = new SearchOneWayStep();
 		step.initBrowser();
 	}
 	
-	@Test(groups = {"on"}, description = "check needed site")
+	@Test(priority = 1, description = "check needed site")
 	public void testMainPage() {
 		step.openMainPage();
 		String str= step.getPageName();
 		Assert.assertEquals(text.trim().toLowerCase(), str);
 	}
 
-	@AfterGroups(groups = {"on"}, description = "Fill destination")
-	public void oneCanLogin() {
+	@Test(priority = 2, description = "Fill destination")
+	public void testDestinationInput() {
 		step.fillDestination(DESTINATION1, DESTINATION2);
-		step.chooseDate();
+	}
+	
+	@Test(priority = 3, description = "Fill date")
+	public void chooseDate() {
+		step.chooseDate("9");
+	}
+	
+	@Test(priority = 4, description = "Click on the button search")
+	public void clickButtonSearch() {
 		step.clickButtonSearch();
 	}
 	
-	@AfterClass
+	@AfterTest(description = "go to seach results")
 	public void searchTicketsResSet() {
 		stepic.searchTickets();
 	}
-	
-//	@AfterGroups(groups = {"on"}, description = "click on button")
-//	public void buttonSearch() {
-//		step.clickButtonSearch();
-//	}
-
 	
 //	@AfterTest(description = "Stop Browser")
 //	public void stopBrowser() {

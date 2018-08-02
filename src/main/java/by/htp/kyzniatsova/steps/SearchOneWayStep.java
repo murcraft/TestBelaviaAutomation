@@ -1,15 +1,20 @@
-package steps;
+package by.htp.kyzniatsova.steps;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-import driver.DriverSingleton;
-import pages.MainPage;
+import by.htp.kyzniatsova.driver.DriverSingleton;
+import by.htp.kyzniatsova.pages.MainPage;
+import by.htp.kyzniatsova.pages.SearchResultsPage;
 
-public class SearchOneWay extends AbstractStep {
+public class SearchOneWayStep extends AbstractStep {
 	private WebDriver driver;
 
 	private final Logger logger = LogManager.getRootLogger();
@@ -43,15 +48,16 @@ public class SearchOneWay extends AbstractStep {
 		mainPage.chooseDestination();
 	}
 	
-	public void chooseDate() {
+	public void chooseDate(String date) {
 		MainPage mainPage = new MainPage(driver);
-		mainPage.chooseDate();
+		mainPage.chooseDate(date);
 
 	}
 	
-	public void clickButtonSearch() {
+	public SearchResultsPage clickButtonSearch() {
 		MainPage mainPage = new MainPage(driver);
 		mainPage.putButton();
+		return new SearchResultsPage(driver);
 	}
 
 }

@@ -1,4 +1,4 @@
-package pages;
+package by.htp.kyzniatsova.pages;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainPage extends Page {
 	private final Logger logger = LogManager.getRootLogger();
@@ -33,7 +35,7 @@ public class MainPage extends Page {
 	private final By dropdownDestinationTo = By.xpath("//div[@id='ibe']/form/div[1]/div[2]/div/a");
 	
 	private final By inputLeftCalendar = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
-	private final By getBody = By.cssSelector("#calendar > div > div.ui-datepicker-group.ui-datepicker-group-first > table > tbody > tr > td > a");//#calendar > div > div.ui-datepicker-group.ui-datepicker-group-first > table > tbody > tr > td
+	private final By getTableTd = By.xpath("//div[@id='calendar']/div/div[contains(@class, 'ui-datepicker-group-first')]/table/descendant::td/a");//#calendar > div > div.ui-datepicker-group.ui-datepicker-group-first > table > tbody > tr > td
 
 	public MainPage(WebDriver driver) {
 		super(driver);
@@ -82,15 +84,17 @@ public class MainPage extends Page {
 		return driver.findElement(getRightMonthYear).getText();
 	}
 	
-	public void chooseDate() {
+	public void chooseDate(String date) {
+		WebDriverWait waitDate = new WebDriverWait(driver, 10);
+		waitDate.pollingEvery(5, TimeUnit.SECONDS);
 		driver.findElement(inputLeftCalendar).click();
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		List<WebElement> list = driver.findElements(getBody);
+//		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+		List<WebElement> list = driver.findElements(getTableTd);
 		for(WebElement td : list) {
+			waitDate.pollingEvery(5, TimeUnit.SECONDS);
 			System.out.println(td.getText());
-			driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-			System.out.println(td.getText());
-			if("8".equals(td.getText())) {
+			if(date.equals(td.getText())) {
+				
 				td.click();
 				break;
 			}
@@ -101,6 +105,7 @@ public class MainPage extends Page {
 	
 	public SearchResultsPage putButton() {
 		driver.findElement(buttonFind).click();
+		WebDriverWait waitResPage = new WebDriverWait(driver, 10);
 		return new SearchResultsPage(driver);
 	}
 }
