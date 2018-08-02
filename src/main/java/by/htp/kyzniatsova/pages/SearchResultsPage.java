@@ -25,9 +25,7 @@ public class SearchResultsPage extends Page {
 	
 	public void  searchText() {
 		List<WebElement> elements = driver.findElements(inputElement);
-		
 		for(WebElement label : elements) {
-//			WebElement el = div.findElement(By.xpath("//div[contains(@class='fare')]/label"));
 			System.out.println(label.getText());
 		}
 	}

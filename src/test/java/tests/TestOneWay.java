@@ -14,7 +14,7 @@ public class TestOneWay {
 	private final String text = "support@belavia.by";
 	
 
-	@BeforeMethod(description = "Init browser")
+	@BeforeSuite(description = "Init browser")
 	public void setUp() {
 		step = new SearchOneWayStep();
 		step.initBrowser();
@@ -33,24 +33,31 @@ public class TestOneWay {
 	}
 	
 	@Test(priority = 3, description = "Fill date")
-	public void chooseDate() {
-		step.chooseDate("9");
+	public void testChooseDate() {
+		step.chooseDate("10");
 	}
+
 	
 	@Test(priority = 4, description = "Click on the button search")
-	public void clickButtonSearch() {
-		step.clickButtonSearch();
+	public void testClickButtonSearch() {
+//		step.clickButtonSearch();
+		step.searchTickets();
 	}
 	
-	@AfterTest(description = "go to seach results")
-	public void searchTicketsResSet() {
-		stepic.searchTickets();
-	}
-	
-//	@AfterTest(description = "Stop Browser")
-//	public void stopBrowser() {
-//		step.closeDriver();
+//	@Test(priority = 5, description = "go to seach results")
+//	public void testSearchTicketsResSet() {
+//		step.searchTickets();
 //	}
+	
+//	@Test(priority = 5, description = "Init browser")
+//	public void setUpParse() {
+//		stepic = new ParseTicketsStep();
+//	}
+//		
+	@AfterSuite(description = "Stop Browser")
+	public void stopBrowser() {
+		step.closeDriver();
+	}
 
 
 }
