@@ -13,13 +13,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import by.htp.kyzniatsova.driver.DriverSingleton;
+import by.htp.kyzniatsova.pages.CalendarField;
+import by.htp.kyzniatsova.pages.Destinations;
 import by.htp.kyzniatsova.pages.MainPage;
 import by.htp.kyzniatsova.pages.ResultsTicketPage;
 
 public class SearchOneWayStep extends AbstractStep {
 	
 	private WebDriver driver;
-
 
 	private final Logger logger = LogManager.getRootLogger();
 	
@@ -49,13 +50,16 @@ public class SearchOneWayStep extends AbstractStep {
 	public void fillDestination(String destination1, String destination2) {
 		MainPage mainPage = new MainPage(driver);
 		mainPage.chooseSearchigTab();
-		mainPage.chooseDestination();
+		Destinations dest = new Destinations(driver);
+		dest.chooseDepartCity();
+		dest.chooseDestinationCity();
+		mainPage.chooseRadioButtonSides();
 	}
 	
 	public void chooseDate(String date) {
-		MainPage mainPage = new MainPage(driver);
-		mainPage.parseDates();
-		mainPage.chooseDate(date);
+		CalendarField cal = new CalendarField(driver);
+		cal.parseDates();
+		cal.chooseDate(date);
 	}
 	
 	public ResultsTicketPage clickButtonSearch() {
@@ -66,8 +70,8 @@ public class SearchOneWayStep extends AbstractStep {
 	
 	public void searchTickets() {
 		MainPage mainPage = new MainPage(driver);
-		ResultsTicketPage searchResultsPage = mainPage.putButton();
-		searchResultsPage.searchTicketPrices();
+		ResultsTicketPage resultsPage = mainPage.putButton();
+		resultsPage.searchTicketPrices();
 	}
 
 }

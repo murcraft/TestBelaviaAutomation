@@ -20,6 +20,8 @@ public class MainPage extends Page {
 	private final By tabLocator = By.cssSelector("#navtab > ul > li:nth-child(1) > a");
 	private final By inputFromLocator = By.cssSelector("#OriginLocation_Combobox");
 	private final By inputToLocator = By.cssSelector("#DestinationLocation_Combobox");
+	private final By dropdownInputFrom = By.xpath("//ul[@id='ui-id-2']/li[@class='ui-menu-item']");
+	private final By dropdownInputTo = By.xpath("//ul[@id='ui-id-3']/li[@class='ui-menu-item']");
 	
 	private final By buttonFind = By.cssSelector("#step-2 > div:nth-child(4) > div > button");
 	private final By radioButton = By.xpath("//div[@id='step-2']/div[1]/div/label[1]");
@@ -32,14 +34,15 @@ public class MainPage extends Page {
 	private final By getNextCalendarMonth = By.xpath("//div[@id='calendar']/div/div[2]/div/a");
 	private final By getDayOfMonth = By.xpath("//*[@id='calendar']/div/div[1]/table/tbody/tr[1]/td[3]/a");
 	private final By getSupportLink = By.xpath("//div[@id='footer']/div[1]/div/div[1]/div[2]/a");
-	private final By dropdownDestination = By.xpath("//div[@id='ibe']/form/div[1]/div[1]/div/a");
-	private final By dropdownDestinationTo = By.xpath("//div[@id='ibe']/form/div[1]/div[2]/div/a");
-	private final By calendar = By.xpath("");
+
 	
 	private final By inputLeftCalendar = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
 	private final By getTableTd = By.xpath("//div[@id='calendar']/div/div[contains(@class,'ui-datepicker-group-first')]/table/descendant::td/a");
 	private final By buttonResultsNext = By.xpath("//button[contains(@class, 'btn btn-b2-green')]");
 
+	private Destinations destination; //= new Destinations(driver);
+	private CalendarField calendarField;
+	
 	public MainPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(this.driver, this);
@@ -56,61 +59,14 @@ public class MainPage extends Page {
 	}
 	
 	public void chooseSearchigTab() {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(tabLocator));
 		driver.findElement(tabLocator).click();
-		
-		driver.findElement(dropdownDestination).click();
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		driver.findElement(inputFromLocator).sendKeys(fromDestination);
-		driver.findElement(By.xpath("//ul[@id='ui-id-2']/li[@class='ui-menu-item']")).click();
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		
-		driver.findElement(dropdownDestinationTo).click();
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-		driver.findElement(inputToLocator).sendKeys(toDestination);
-		driver.findElement(By.xpath("//ul[@id='ui-id-3']/li[@class='ui-menu-item']")).click();
-		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-	}
-	
-	public void chooseDestination() {
-		driver.findElement(radioButton).click();
-	
-	}
-	
-	public String chooseMonthRight() {
-		driver.findElement(inputDateTo).click();
-		return driver.findElement(getLeftMonthYear).getText();
-	}
-	
-	public String chooseMonthLeft() {
-		driver.findElement(inputDateTo).click();
-		return driver.findElement(getRightMonthYear).getText();
-	}
-	
-	
-	public void parseDates() {
-		WebDriverWait waitDate = new WebDriverWait(driver, 10);
-		waitDate.until(ExpectedConditions.elementToBeClickable(inputLeftCalendar));
-		driver.findElement(inputLeftCalendar).click();
-		List<WebElement> list = driver.findElements(getTableTd);
-		for(WebElement td : list) {
-			System.out.println(td.getText());
-		}
-	}
-	
-	public void chooseDate(String date) {
-		WebDriverWait waitDate = new WebDriverWait(driver, 10);
-		waitDate.until(ExpectedConditions.elementToBeClickable(getTableTd));
-		List<WebElement> list = driver.findElements(getTableTd);
-		for(WebElement td : list) {
-			if(td.getText().equals(date)) {
-				td.click();
-				break;
-			}
-		}
 	}
 
+	public void chooseRadioButtonSides() {
+		driver.findElement(radioButton).click();
+	}
 	
 	public ResultsTicketPage putButton() {
 		WebDriverWait waitResPage = new WebDriverWait(driver, 30);

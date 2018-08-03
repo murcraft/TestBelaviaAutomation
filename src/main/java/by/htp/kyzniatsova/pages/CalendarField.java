@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class Calendar extends MainPage {
+public class CalendarField extends MainPage {
 
 	private final By inputDateTo = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
 	private final By getLeftMonthYear = By.xpath("//div[@id='calendar']/div/div[1]/div/div");
@@ -21,7 +21,7 @@ public class Calendar extends MainPage {
 	private final By inputLeftCalendar = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
 	private final By getTableTd = By.xpath("//div[@id='calendar']/div/div[contains(@class,'ui-datepicker-group-first')]/table/descendant::td/a");
 	
-	public Calendar(WebDriver driver) {
+	public CalendarField(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(this.driver, this);
 	}
@@ -38,7 +38,7 @@ public class Calendar extends MainPage {
 	
 	
 	public void parseDates() {
-		WebDriverWait waitDate = new WebDriverWait(driver, 10);
+		WebDriverWait waitDate = new WebDriverWait(driver, 30);
 		waitDate.until(ExpectedConditions.elementToBeClickable(inputLeftCalendar));
 		driver.findElement(inputLeftCalendar).click();
 		List<WebElement> list = driver.findElements(getTableTd);
@@ -48,8 +48,6 @@ public class Calendar extends MainPage {
 	}
 	
 	public void chooseDate(String date) {
-		WebDriverWait waitDate = new WebDriverWait(driver, 10);
-		waitDate.until(ExpectedConditions.elementToBeClickable(getTableTd));
 		List<WebElement> list = driver.findElements(getTableTd);
 		for(WebElement td : list) {
 			if(td.getText().equals(date)) {
