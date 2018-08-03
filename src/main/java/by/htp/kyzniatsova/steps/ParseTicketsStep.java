@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import by.htp.kyzniatsova.pages.MainPage;
-import by.htp.kyzniatsova.pages.SearchResultsPage;
+import by.htp.kyzniatsova.pages.ResultsTicketPage;
 
 public class ParseTicketsStep extends AbstractStep {
 	
@@ -29,7 +29,7 @@ public class ParseTicketsStep extends AbstractStep {
 	public void searchTickets() {
 		WebDriverWait waitDate = new WebDriverWait(driver, 30);
 		waitDate.withTimeout(30, TimeUnit.SECONDS);
-		SearchResultsPage searchResultsPage = new SearchResultsPage(driver);
+		ResultsTicketPage searchResultsPage = new ResultsTicketPage(driver);
 		searchResultsPage.searchText();
 	}
 	

@@ -9,11 +9,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import by.htp.kyzniatsova.driver.DriverSingleton;
 import by.htp.kyzniatsova.pages.MainPage;
-import by.htp.kyzniatsova.pages.SearchResultsPage;
+import by.htp.kyzniatsova.pages.ResultsTicketPage;
 
 public class SearchOneWayStep extends AbstractStep {
 	
@@ -29,7 +30,7 @@ public class SearchOneWayStep extends AbstractStep {
 	
 	@Override
 	public void closeDriver() {
-		driver.manage().timeouts().implicitlyWait(10000, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(1000, TimeUnit.SECONDS);
 		DriverSingleton.closeDriver();
 	}
 	
@@ -52,26 +53,20 @@ public class SearchOneWayStep extends AbstractStep {
 	}
 	
 	public void chooseDate(String date) {
-		WebDriverWait waitDate = new WebDriverWait(driver, 10);
 		MainPage mainPage = new MainPage(driver);
-		waitDate.withTimeout(5, TimeUnit.SECONDS);
 		mainPage.parseDates();
-		waitDate.withTimeout(25, TimeUnit.SECONDS);
 		mainPage.chooseDate(date);
 	}
 	
-	public SearchResultsPage clickButtonSearch() {
+	public ResultsTicketPage clickButtonSearch() {
 		MainPage mainPage = new MainPage(driver);
 		mainPage.putButton();
-		WebDriverWait waitDate = new WebDriverWait(driver, 10);
-		waitDate.withTimeout(35, TimeUnit.SECONDS);
-		return new SearchResultsPage(driver);
+		return new ResultsTicketPage(driver);
 	}
 	
 	public void searchTickets() {
-		WebDriverWait waitDate = new WebDriverWait(driver, 30);
-		waitDate.withTimeout(30, TimeUnit.SECONDS);
-		SearchResultsPage searchResultsPage = clickButtonSearch();//new SearchResultsPage(driver);
+		MainPage mainPage = new MainPage(driver);
+		ResultsTicketPage searchResultsPage = mainPage.putButton();
 		searchResultsPage.searchText();
 	}
 
