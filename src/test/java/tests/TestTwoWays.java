@@ -1,12 +1,15 @@
 package tests;
+
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
-import by.htp.kyzniatsova.steps.SearchOneWayStep;
+import by.htp.kyzniatsova.steps.SearchTwoWayStep;
 
-public class TestOneWay {
+public class TestTwoWays {
 	
-	private SearchOneWayStep step;
+	private SearchTwoWayStep step;
 	private final String DESTINATION1 = "Ã»Õ— ";
 	private final String DESTINATION2 = "–»√¿";
 	private final String text = "support@belavia.by";
@@ -14,7 +17,7 @@ public class TestOneWay {
 
 	@BeforeSuite(description = "Init browser")
 	public void setUp() {
-		step = new SearchOneWayStep();
+		step = new SearchTwoWayStep();
 		step.initBrowser();
 	}
 	
@@ -32,26 +35,15 @@ public class TestOneWay {
 	
 	@Test(priority = 3, description = "Fill date")
 	public void testChooseDate() {
-		step.chooseDate("10");
+		step.chooseDateTo("10");
+		step.chooseDateBack("11");
 	}
 
-	
 	@Test(priority = 4, description = "Click on the button search")
 	public void testClickButtonSearch() {
-//		step.clickButtonSearch();
 		step.searchTickets();
 	}
-	
-//	@Test(priority = 5, description = "go to seach results")
-//	public void testSearchTicketsResSet() {
-//		step.searchTickets();
-//	}
-	
-//	@Test(priority = 5, description = "Init browser")
-//	public void setUpParse() {
-//		stepic = new ParseTicketsStep();
-//	}
-//		
+
 	@AfterSuite(description = "Stop Browser")
 	public void stopBrowser() {
 		step.closeDriver();

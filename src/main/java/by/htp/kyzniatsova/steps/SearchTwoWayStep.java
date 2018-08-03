@@ -1,16 +1,10 @@
 package by.htp.kyzniatsova.steps;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import by.htp.kyzniatsova.driver.DriverSingleton;
 import by.htp.kyzniatsova.pages.CalendarField;
@@ -18,11 +12,11 @@ import by.htp.kyzniatsova.pages.Destinations;
 import by.htp.kyzniatsova.pages.MainPage;
 import by.htp.kyzniatsova.pages.ResultsTicketPage;
 
-public class SearchOneWayStep extends AbstractStep {
+public class SearchTwoWayStep extends AbstractStep {
 	
 	private WebDriver driver;
 	private final Logger logger = LogManager.getRootLogger();
-	
+
 	@Override
 	public void initBrowser() {
 		driver = DriverSingleton.getDriver();
@@ -33,6 +27,7 @@ public class SearchOneWayStep extends AbstractStep {
 		driver.manage().timeouts().implicitlyWait(1000, TimeUnit.SECONDS);
 		DriverSingleton.closeDriver();
 	}
+	
 	
 	public void openMainPage() {
 		MainPage mainPage = new MainPage(driver);
@@ -52,14 +47,21 @@ public class SearchOneWayStep extends AbstractStep {
 		Destinations dest = new Destinations(driver);
 		dest.chooseDepartCity();
 		dest.chooseDestinationCity();
-		dest.chooseLabelDestOneSide();
+		dest.chooseLabelDestTwoSides();
+		
 	}
 	
-	public void chooseDate(String date) {
+	public void chooseDateTo(String date) {
 		CalendarField cal = new CalendarField(driver);
 		cal.clickInputCalendar();
 		cal.parseDatesTo();
 		cal.chooseDateTo(date);
+	}
+	
+	public void chooseDateBack(String date) {
+		CalendarField cal = new CalendarField(driver);
+		cal.parseDatesFrom();
+		cal.chooseDateBack(date);
 	}
 	
 	public ResultsTicketPage clickButtonSearch() {

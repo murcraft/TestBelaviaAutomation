@@ -25,6 +25,9 @@ public class Destinations extends MainPage {
 	private final By dropdownDestination = By.xpath("//div[@id='ibe']/form/div[1]/div[1]/div/a");
 	private final By dropdownDestinationTo = By.xpath("//div[@id='ibe']/form/div[1]/div[2]/div/a");
 	
+	private final By labelSideOne = By.xpath("//div[@id='step-2']/div[1]/div/label[1]");
+	private final By labelSideTwo = By.xpath("//div[@id='step-2']/div[1]/div/label[2]");
+	
 	public Destinations(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(this.driver, this);
@@ -50,6 +53,14 @@ public class Destinations extends MainPage {
 		WebElement inputTextTo = driver.findElement(dropdownInputTo);
 		wait.until(ExpectedConditions.elementToBeClickable(dropdownInputTo));
 		inputTextTo.click();
+	}
+
+	public void chooseLabelDestOneSide() {
+		driver.findElement(labelSideOne).click();
+	}	
+	
+	public void chooseLabelDestTwoSides() {
+		driver.findElement(labelSideTwo).click();
 	}
 
 }

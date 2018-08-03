@@ -12,14 +12,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class CalendarField extends MainPage {
 
 	private final By inputDateTo = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
+	private final By inputDateBack = By.xpath("//div[@id='step-2']/div[2]/div[2]/div/a");
 	private final By getLeftMonthYear = By.xpath("//div[@id='calendar']/div/div[1]/div/div");
 	private final By getRightMonthYear = By.xpath("//div[@id='calendar']/div/div[2]/div/div");
 	private final By getPreviousCalendarMonth = By.xpath("//div[@id='calendar']/div/div[1]/div/a");
-	private final By getNextCalendarMonth = By.xpath("//div[@id='calendar']/div/div[2]/div/a");
+	
+	private final By arrowNextMonth = By.xpath("//div[@id='calendar']/div/div[2]/div/a");
 	private final By getDayOfMonth = By.xpath("//*[@id='calendar']/div/div[1]/table/tbody/tr[1]/td[3]/a");
 	
 	private final By inputLeftCalendar = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
-	private final By getTableTd = By.xpath("//div[@id='calendar']/div/div[contains(@class,'ui-datepicker-group-first')]/table/descendant::td/a");
+	private final By getTableTd = By.xpath("//div[@id='calendar']/div/div[contains(@class,'ui-datepicker-group-first')]/table/.//td/a");
 	
 	public CalendarField(WebDriver driver) {
 		super(driver);
@@ -36,18 +38,40 @@ public class CalendarField extends MainPage {
 		return driver.findElement(getRightMonthYear).getText();
 	}
 	
-	
-	public void parseDates() {
+	public void clickInputCalendar() {
 		WebDriverWait waitDate = new WebDriverWait(driver, 30);
-		waitDate.until(ExpectedConditions.elementToBeClickable(inputLeftCalendar));
-		driver.findElement(inputLeftCalendar).click();
+		waitDate.until(ExpectedConditions.elementToBeClickable(inputDateTo));
+		driver.findElement(inputDateTo).click();
+	}
+	
+	public void parseDatesTo() {
+//		WebDriverWait waitDate = new WebDriverWait(driver, 30);
+//		waitDate.until(ExpectedConditions.elementToBeClickable(inputDateTo));
+//		driver.findElement(inputDateTo).click();
 		List<WebElement> list = driver.findElements(getTableTd);
 		for(WebElement td : list) {
 			System.out.println(td.getText());
 		}
 	}
 	
-	public void chooseDate(String date) {
+	public void chooseDateTo(String date) {
+		List<WebElement> list = driver.findElements(getTableTd);
+		for(WebElement td : list) {
+			if(td.getText().equals(date)) {
+				td.click();
+				break;
+			}
+		}
+	}
+	
+	public void parseDatesFrom() {
+		List<WebElement> list = driver.findElements(getTableTd);
+		for(WebElement td : list) {
+			System.out.println(td.getText());
+		}
+	}
+	
+	public void chooseDateBack(String date) {
 		List<WebElement> list = driver.findElements(getTableTd);
 		for(WebElement td : list) {
 			if(td.getText().equals(date)) {
