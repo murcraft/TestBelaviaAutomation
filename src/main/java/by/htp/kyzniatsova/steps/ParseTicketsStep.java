@@ -30,7 +30,7 @@ public class ParseTicketsStep extends AbstractStep {
 		WebDriverWait waitDate = new WebDriverWait(driver, 30);
 		waitDate.withTimeout(30, TimeUnit.SECONDS);
 		ResultsTicketPage searchResultsPage = new ResultsTicketPage(driver);
-		searchResultsPage.searchText();
+		searchResultsPage.searchTicketPrices();
 	}
 	
 }

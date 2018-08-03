@@ -67,7 +67,7 @@ public class SearchOneWayStep extends AbstractStep {
 	public void searchTickets() {
 		MainPage mainPage = new MainPage(driver);
 		ResultsTicketPage searchResultsPage = mainPage.putButton();
-		searchResultsPage.searchText();
+		searchResultsPage.searchTicketPrices();
 	}
 
 }
