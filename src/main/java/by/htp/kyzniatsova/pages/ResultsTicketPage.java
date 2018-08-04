@@ -1,38 +1,43 @@
 package by.htp.kyzniatsova.pages;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import by.htp.kyzniatsova.entity.TicketOneWay;
+import by.htp.kyzniatsova.entity.TicketWay;
 
 public class ResultsTicketPage extends Page {
-	
-	private final By returnButton = By.xpath("//div/button[contains(@class,'btn btn-default ui-corner-all cancel')]");
 
-	private final By linkCalendar = By.xpath("//div[@class='hdr']/descendant::div[contains(@class,'text-right')]/a");
-	private final By labelElement = By.xpath("//div[contains(@class,'fare')]/label");
-	private final By inputElement = By.xpath("//div[@class='fare-avail ui-corner-all']/div[contains(@class,'fare')]/input");
+	@FindBy(linkText = "Fare calendar")
+	private WebElement fareCalendar;
 
-	private final By inputBefore = By.xpath("//div[contains(@class,'fare')]/label/preceding-sibling::input");
-	private final By inputFromMain = By.cssSelector("#OriginLocation_Combobox");
-	
-	private final By valueDay = By.xpath("//div[@class='hdr']/.//h3");
-	private final By valueTime = By.xpath("//div[@class='departure']//strong");
-	
-	private final By allertError = By.xpath("//div[@class='alert-error alert']");
-	
-	private final By nextSevenDays = By.xpath("//div[@id='matrix']/div[1]/div[1]/div[2]/a");
+	@FindBy(xpath = "//div[@class='price']//input")
+	private List<WebElement> availableDates;
 
-	private TicketOneWay ticket = new TicketOneWay();
+	@FindBy(xpath = "//div[@class='price']/div")
+	List<WebElement> returnTickets;
+
+	@FindBy(xpath = "//*[@class='button btn btn-b2-green btn-large btn-b2-green-fixed ui-corner-all']")
+	private WebElement nextButton;
+
+	private WebDriverWait wait = new WebDriverWait(driver, 10);
 
 	public ResultsTicketPage(WebDriver driver) {
 		super(driver);
@@ -42,98 +47,122 @@ public class ResultsTicketPage extends Page {
 	@Override
 	public void openPage() {
 	}
-	
-	public String checkEmptyTicket() {
-		if(existsElement(valueDay)) {
-			String day = driver.findElement(valueDay).getText();
-			return day;
-		}
-		return null;
+
+	public List<TicketWay> getOneWayTickets() {
+
+		wait.until(ExpectedConditions.visibilityOf(fareCalendar));
+
+		fareCalendar.click();
+		List<TicketWay> tickets = new ArrayList<TicketWay>();
+		TicketWay ticket = null;
+
+		do {
+			for (WebElement element : availableDates) {
+
+				WebElement price = element.findElement(By.xpath("following-sibling::label"));
+				String date = element.getAttribute("value");
+
+				ticket = new TicketWay();
+				ticket.setDate(date);
+				ticket.setPrice(price.getText());
+				tickets.add(ticket);
+			}
+
+			WebElement next = driver.findElement(By.xpath("//i[@class='icon-right-open']"));
+			wait.until(ExpectedConditions.visibilityOf(next));
+			next.click();
+		} while (checkLastTicket(tickets, ticket));
+
+		return tickets;
 	}
-	
-	public void conditionSearching() {
-		if(existsElement(allertError)) {
-			clickReturnButton();
-		} else {
-			searchTicketPrices();
-			searchTicketClasses();
-		}
-	}
-	
-	
-	public void searchTicketPrices() {
-		System.out.println("Search tickets prises");
-		if(driver.findElements(allertError).size() == 0){
-//		if(existsElement(valueDay)) {
-			System.out.println("Search tickets prises");
-//			if(checkEmptyTicket() != null) {
-				System.out.println(checkEmptyTicket());
-				System.out.println(getFlightTime());
-				List<WebElement> elements = driver.findElements(labelElement);
-				for(WebElement label : elements) {
-					if(existsElement(inputElement)){
-						System.out.println(label.getText());
-					}
-				}
-//			searchTicketClasses();
-//			}
-//		}
-		}
-		
-	}
-	
-	public void searchTicketClasses() {
-		System.out.println("Search tickets");
-		if(existsElement(valueDay)) {
-//		if(checkEmptyTicket() != null) {
-		List<WebElement> elements = driver.findElements(inputElement);
-		for(WebElement input : elements) {
-			if(existsElement(inputElement)){
-				System.out.println(input.getAttribute("id"));
+
+	public Boolean checkLastTicket(List<TicketWay> tickets, TicketWay ticket) {
+
+		Boolean shouldClickNext = false;
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd");
+		LocalDate lastDate = LocalDate.of(2018, 11, 1);
+		LocalDate localDate;
+
+		if (ticket != null && tickets.size() > 0) {
+
+			TicketWay lastTicket = tickets.get(tickets.size() - 1);
+
+			String flightDate = lastTicket.getDate();
+			localDate = LocalDate.parse(flightDate, formatter);
+			if (localDate.isBefore(lastDate)) {
+				shouldClickNext = true;
 			}
 		}
-//		}
+
+		return shouldClickNext;
+	}
+
+	public void sortByPrice(List<TicketWay> tickets) {
+		Collections.sort(tickets);
+	}
+
+	public void printListOfReturnTickets(List<TicketWay> tickets) {
+
+		for (TicketWay ticket : tickets) {
+			System.out.println(ticket.toString());
 		}
-		
 	}
-	
-	private boolean existsElement(By id) {
-	    try {
-	        driver.findElement(id);
-	        return true;
-	    } catch (NoSuchElementException e) {
-	    	return false;
-	    } finally {
-	    	return false;
-	    }
+
+	public void printListOfOneWayTickets(List<TicketWay> tickets) {
+
+		for (Ticket ticket : tickets) {
+			System.out.println(ticket.toStringOneWay());
+		}
 	}
-	
-	public String getFlightTime() {
-		String time = driver.findElement(valueTime).getText();
-		return time;
+
+	public void sortByFlightDate(List<TicketWay> tickets) {
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd");
+		Collections.sort(tickets, new Comparator<TicketWay>() {
+
+			public int compare(TicketWay t1, TicketWay t2) {
+				LocalDate date1 = LocalDate.parse(t1.getDate(), formatter);
+				LocalDate date2 = LocalDate.parse(t2.getDate(), formatter);
+				if (date1.isAfter(date2)) {
+					return 1;
+				} else if (date1.isBefore(date2)) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+		});
+
 	}
-	
-	public MainPage clickReturnButton() {
-		WebDriverWait waitResPage = new WebDriverWait(driver, 10);
-//		waitResPage.until(ExpectedConditions.invisibilityOfElementLocated(returnButton));
-//		waitResPage.until(ExpectedConditions.elementToBeClickable(returnButton));
-		driver.findElement(returnButton).sendKeys(Keys.ENTER);//.submit();
-		driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
-//		driver.manage().timeouts().implicitlyWait(20, unit)
-//		waitResPage.until(ExpectedConditions.visibilityOfElementLocated(inputFromMain));
-		return new MainPage(driver);
+
+	public List<TicketWay> getReturnTickets() {
+
+		TicketWay returnTicket = null;
+		List<TicketWay> tickets = new ArrayList<TicketWay>();
+		do {
+			for (WebElement element : returnTickets) {
+				returnTicket = new TicketWay();
+
+				WebElement date = element.findElement(By.xpath("input"));
+				WebElement price = element.findElement(By.xpath("label"));
+
+				String datesString = date.getAttribute("value");
+				String[] arr = datesString.split(":");
+
+				returnTicket.setDate(arr[0]);
+				returnTicket.setReturnDate(arr[1]);
+				returnTicket.setPrice(price.getText());
+				tickets.add(returnTicket);
+			}
+
+			WebElement next = driver.findElement(By.xpath("//i[@class='icon-right-open']"));
+			wait.until(ExpectedConditions.visibilityOf(next));
+			next.click();
+
+		} while (checkLastTicket(tickets, returnTicket));
+
+		return tickets;
 	}
-	
-	public TicketsPricesPage goToNextDays() {
-		driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
-		driver.findElement(nextSevenDays).click();
-		driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
-		return new TicketsPricesPage(driver);
-	}
-	
-	
-	
-	
-	
 
 }

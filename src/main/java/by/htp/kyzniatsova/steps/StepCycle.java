@@ -3,9 +3,9 @@ package by.htp.kyzniatsova.steps;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class StepCycle extends SearchOneWayStep {
+public class StepCycle extends SearchStep {
 	
-	SearchOneWayStep stepneWay = new SearchOneWayStep();
+	SearchStep stepneWay = new SearchStep();
 	
 	public int getDayOfMonth(int year, int month) {
 		Calendar myCal = (Calendar)Calendar.getInstance().clone();

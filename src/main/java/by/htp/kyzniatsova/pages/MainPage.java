@@ -56,4 +56,7 @@ public class MainPage extends Page {
 //		waitResPage.until(ExpectedConditions.presenceOfElementLocated(buttonResultsNext));
 		return new ResultsTicketPage(driver);
 	}
+	
+	
+	
 }
