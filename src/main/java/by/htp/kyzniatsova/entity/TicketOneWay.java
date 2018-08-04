@@ -2,7 +2,7 @@ package by.htp.kyzniatsova.entity;
 
 import java.io.Serializable;
 
-public class Ticket implements Serializable {
+public class TicketOneWay implements Serializable {
 
 	private static final long serialVersionUID = 9219949723385721862L;
 	
@@ -11,10 +11,10 @@ public class Ticket implements Serializable {
 	private String flightClass;
 	private String ticketPrice;
 	
-	public Ticket() {
+	public TicketOneWay() {
 	}
 	
-	public Ticket(String departureDate, String departureTime, String flightClass, String ticketPrice) {
+	public TicketOneWay(String departureDate, String departureTime, String flightClass, String ticketPrice) {
 		super();
 		this.departureDate = departureDate;
 		this.departureTime = departureTime;
@@ -73,7 +73,7 @@ public class Ticket implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Ticket other = (Ticket) obj;
+		TicketOneWay other = (TicketOneWay) obj;
 		if (departureDate == null) {
 			if (other.departureDate != null)
 				return false;

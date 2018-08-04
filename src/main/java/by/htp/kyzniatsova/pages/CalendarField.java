@@ -3,6 +3,7 @@ package by.htp.kyzniatsova.pages;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -42,6 +43,25 @@ public class CalendarField extends MainPage {
 		WebDriverWait waitDate = new WebDriverWait(driver, 30);
 		waitDate.until(ExpectedConditions.elementToBeClickable(inputDateTo));
 		driver.findElement(inputDateTo).click();
+	}
+	
+//	public boolean isClickInputCalendar() {
+//		WebDriverWait waitDate = new WebDriverWait(driver, 30);
+//		
+//		if(existsElement(inputDateTo)) {
+//			waitDate.until(ExpectedConditions.elementToBeClickable(inputDateTo));
+//			driver.findElement(inputDateTo).click();
+//		}
+//		return true;
+//	}
+	
+	private boolean existsElement(By id) {
+	    try {
+	        driver.findElement(id);
+	        return true;
+	    } catch (NoSuchElementException e) {
+	    	return false;
+	    }
 	}
 	
 	public void parseDatesTo() {

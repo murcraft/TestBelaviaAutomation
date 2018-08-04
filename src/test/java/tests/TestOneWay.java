@@ -32,30 +32,32 @@ public class TestOneWay {
 	
 	@Test(priority = 3, description = "Fill date")
 	public void testChooseDate() {
-		step.chooseDate("10");
+		step.chooseDate("4");
 	}
 
 	
 	@Test(priority = 4, description = "Click on the button search")
 	public void testClickButtonSearch() {
-//		step.clickButtonSearch();
 		step.searchTickets();
+		step.nextSevenDays();
 	}
 	
-//	@Test(priority = 5, description = "go to seach results")
-//	public void testSearchTicketsResSet() {
-//		step.searchTickets();
+	@Test(priority = 5, description = "Click on the button search")
+	public void testReturnButton() {
+//		step.clickOnBackOnMain();
+	}
+	
+//	@Test(priority = 6, description = "check needed site")
+//	public void testMainPage1() {
+//		step.openMainPage();
+//		String str= step.getPageName();
+//		Assert.assertEquals(text.trim().toLowerCase(), str);
 //	}
 	
-//	@Test(priority = 5, description = "Init browser")
-//	public void setUpParse() {
-//		stepic = new ParseTicketsStep();
+//	@AfterSuite(description = "Stop Browser")
+//	public void stopBrowser() {
+//		step.closeDriver();
 //	}
-//		
-	@AfterSuite(description = "Stop Browser")
-	public void stopBrowser() {
-		step.closeDriver();
-	}
 
 
 }

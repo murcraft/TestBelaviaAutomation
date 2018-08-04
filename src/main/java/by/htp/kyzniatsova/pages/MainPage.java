@@ -52,7 +52,8 @@ public class MainPage extends Page {
 		WebDriverWait waitResPage = new WebDriverWait(driver, 30);
 		waitResPage.until(ExpectedConditions.elementToBeClickable(buttonFind));
 		driver.findElement(buttonFind).click();
-		waitResPage.until(ExpectedConditions.visibilityOfElementLocated(buttonResultsNext));
+		driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
+//		waitResPage.until(ExpectedConditions.presenceOfElementLocated(buttonResultsNext));
 		return new ResultsTicketPage(driver);
 	}
 }

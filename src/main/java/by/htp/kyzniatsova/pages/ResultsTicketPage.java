@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,7 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import by.htp.kyzniatsova.entity.Ticket;
+import by.htp.kyzniatsova.entity.TicketOneWay;
 
 public class ResultsTicketPage extends Page {
 	
@@ -26,8 +27,12 @@ public class ResultsTicketPage extends Page {
 	
 	private final By valueDay = By.xpath("//div[@class='hdr']/.//h3");
 	private final By valueTime = By.xpath("//div[@class='departure']//strong");
+	
+	private final By allertError = By.xpath("//div[@class='alert-error alert']");
+	
+	private final By nextSevenDays = By.xpath("//div[@id='matrix']/div[1]/div[1]/div[2]/a");
 
-	private Ticket ticket = new Ticket();
+	private TicketOneWay ticket = new TicketOneWay();
 
 	public ResultsTicketPage(WebDriver driver) {
 		super(driver);
@@ -46,30 +51,48 @@ public class ResultsTicketPage extends Page {
 		return null;
 	}
 	
+	public void conditionSearching() {
+		if(existsElement(allertError)) {
+			clickReturnButton();
+		} else {
+			searchTicketPrices();
+			searchTicketClasses();
+		}
+	}
+	
 	
 	public void searchTicketPrices() {
-		if(checkEmptyTicket() != null) {
-			System.out.println(checkEmptyTicket());
-		System.out.println(getFlightTime());
-		List<WebElement> elements = driver.findElements(labelElement);
-		for(WebElement label : elements) {
-			if(existsElement(inputElement)){
-				System.out.println(label.getText());
-			}
-		}
-		searchTicketClasses();
+		System.out.println("Search tickets prises");
+		if(driver.findElements(allertError).size() == 0){
+//		if(existsElement(valueDay)) {
+			System.out.println("Search tickets prises");
+//			if(checkEmptyTicket() != null) {
+				System.out.println(checkEmptyTicket());
+				System.out.println(getFlightTime());
+				List<WebElement> elements = driver.findElements(labelElement);
+				for(WebElement label : elements) {
+					if(existsElement(inputElement)){
+						System.out.println(label.getText());
+					}
+				}
+//			searchTicketClasses();
+//			}
+//		}
 		}
 		
 	}
 	
 	public void searchTicketClasses() {
-		if(checkEmptyTicket() != null) {
+		System.out.println("Search tickets");
+		if(existsElement(valueDay)) {
+//		if(checkEmptyTicket() != null) {
 		List<WebElement> elements = driver.findElements(inputElement);
 		for(WebElement input : elements) {
 			if(existsElement(inputElement)){
 				System.out.println(input.getAttribute("id"));
 			}
 		}
+//		}
 		}
 		
 	}
@@ -80,6 +103,8 @@ public class ResultsTicketPage extends Page {
 	        return true;
 	    } catch (NoSuchElementException e) {
 	    	return false;
+	    } finally {
+	    	return false;
 	    }
 	}
 	
@@ -88,12 +113,22 @@ public class ResultsTicketPage extends Page {
 		return time;
 	}
 	
-	public MainPage ClickReturnButton() {
-		WebDriverWait waitResPage = new WebDriverWait(driver, 30);
-		waitResPage.until(ExpectedConditions.elementToBeClickable(returnButton));
-		driver.findElement(returnButton).click();
-		waitResPage.until(ExpectedConditions.visibilityOfElementLocated(inputFromMain));
+	public MainPage clickReturnButton() {
+		WebDriverWait waitResPage = new WebDriverWait(driver, 10);
+//		waitResPage.until(ExpectedConditions.invisibilityOfElementLocated(returnButton));
+//		waitResPage.until(ExpectedConditions.elementToBeClickable(returnButton));
+		driver.findElement(returnButton).sendKeys(Keys.ENTER);//.submit();
+		driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
+//		driver.manage().timeouts().implicitlyWait(20, unit)
+//		waitResPage.until(ExpectedConditions.visibilityOfElementLocated(inputFromMain));
 		return new MainPage(driver);
+	}
+	
+	public TicketsPricesPage goToNextDays() {
+		driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
+		driver.findElement(nextSevenDays).click();
+		driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
+		return new TicketsPricesPage(driver);
 	}
 	
 	
