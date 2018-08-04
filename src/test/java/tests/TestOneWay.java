@@ -1,7 +1,8 @@
 package tests;
-import org.testng.Assert;
+
 import org.testng.annotations.*;
 
+import by.htp.kyzniatsova.pages.ResultsTicketPage;
 import by.htp.kyzniatsova.steps.SearchStep;
 
 public class TestOneWay extends BaseTest {
@@ -9,17 +10,16 @@ public class TestOneWay extends BaseTest {
 	private SearchStep steps;
 	private final String DESTINATION1 = "Ã»Õ— ";
 	private final String DESTINATION2 = "–»√¿";
-	private final String text = "support@belavia.by";
-	
+	private final String KIND = "One";
 
 	@Test
 	public void searchOneWayTicketToRiga() {
 		
-		steps.openBelaviaPage();
+		steps.openPage();
 		steps.setDepatureAndDestination(DESTINATION1, DESTINATION2);
-		steps.setOneWayOrReturnTicket("One-way");
+		steps.setOneWayOrReturnTicket(KIND);
 		steps.searchFlight();
-		BookingPage page = steps.getResultsOfOneWayTicketSearch();
+		ResultsTicketPage resPage = steps.getResultsOfOneWayTicketSearch();
 	
 	}
 

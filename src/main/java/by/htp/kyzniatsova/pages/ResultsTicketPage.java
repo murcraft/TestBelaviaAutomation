@@ -29,7 +29,7 @@ public class ResultsTicketPage extends Page {
 	private WebElement fareCalendar;
 
 	@FindBy(xpath = "//div[@class='price']//input")
-	private List<WebElement> availableDates;
+	private List<WebElement> visibleDates;
 
 	@FindBy(xpath = "//div[@class='price']/div")
 	List<WebElement> returnTickets;
@@ -46,10 +46,10 @@ public class ResultsTicketPage extends Page {
 
 	@Override
 	public void openPage() {
+		
 	}
 
-	public List<TicketWay> getOneWayTickets() {
-
+	public List<TicketWay> readOneWayTickets() {
 		wait.until(ExpectedConditions.visibilityOf(fareCalendar));
 
 		fareCalendar.click();
@@ -57,14 +57,13 @@ public class ResultsTicketPage extends Page {
 		TicketWay ticket = null;
 
 		do {
-			for (WebElement element : availableDates) {
-
+			for (WebElement element : visibleDates) {
 				WebElement price = element.findElement(By.xpath("following-sibling::label"));
 				String date = element.getAttribute("value");
 
 				ticket = new TicketWay();
-				ticket.setDate(date);
-				ticket.setPrice(price.getText());
+				ticket.setDepartureDate(date);
+				ticket.setTicketPrice(price.getText());
 				tickets.add(ticket);
 			}
 
@@ -77,24 +76,20 @@ public class ResultsTicketPage extends Page {
 	}
 
 	public Boolean checkLastTicket(List<TicketWay> tickets, TicketWay ticket) {
-
 		Boolean shouldClickNext = false;
-
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd");
 		LocalDate lastDate = LocalDate.of(2018, 11, 1);
 		LocalDate localDate;
 
 		if (ticket != null && tickets.size() > 0) {
-
 			TicketWay lastTicket = tickets.get(tickets.size() - 1);
 
-			String flightDate = lastTicket.getDate();
+			String flightDate = lastTicket.getDepartureDate();
 			localDate = LocalDate.parse(flightDate, formatter);
 			if (localDate.isBefore(lastDate)) {
 				shouldClickNext = true;
 			}
 		}
-
 		return shouldClickNext;
 	}
 
@@ -102,28 +97,14 @@ public class ResultsTicketPage extends Page {
 		Collections.sort(tickets);
 	}
 
-	public void printListOfReturnTickets(List<TicketWay> tickets) {
+	public void sortFlightDates(List<TicketWay> tickets) {
 
-		for (TicketWay ticket : tickets) {
-			System.out.println(ticket.toString());
-		}
-	}
-
-	public void printListOfOneWayTickets(List<TicketWay> tickets) {
-
-		for (Ticket ticket : tickets) {
-			System.out.println(ticket.toStringOneWay());
-		}
-	}
-
-	public void sortByFlightDate(List<TicketWay> tickets) {
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd");
+		final DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("yy-MM-dd");
 		Collections.sort(tickets, new Comparator<TicketWay>() {
 
-			public int compare(TicketWay t1, TicketWay t2) {
-				LocalDate date1 = LocalDate.parse(t1.getDate(), formatter);
-				LocalDate date2 = LocalDate.parse(t2.getDate(), formatter);
+			public int compare(TicketWay ticket1, TicketWay ticket2) {
+				LocalDate date1 = LocalDate.parse(ticket1.getDepartureDate(), formatDate);
+				LocalDate date2 = LocalDate.parse(ticket2.getDepartureDate(), formatDate);
 				if (date1.isAfter(date2)) {
 					return 1;
 				} else if (date1.isBefore(date2)) {
@@ -136,7 +117,7 @@ public class ResultsTicketPage extends Page {
 
 	}
 
-	public List<TicketWay> getReturnTickets() {
+	public List<TicketWay> getTicketsToBack() {
 
 		TicketWay returnTicket = null;
 		List<TicketWay> tickets = new ArrayList<TicketWay>();
@@ -150,9 +131,9 @@ public class ResultsTicketPage extends Page {
 				String datesString = date.getAttribute("value");
 				String[] arr = datesString.split(":");
 
-				returnTicket.setDate(arr[0]);
-				returnTicket.setReturnDate(arr[1]);
-				returnTicket.setPrice(price.getText());
+				returnTicket.setDepartureDate((arr[0]));
+				returnTicket.setReturnDate(arr[0]);
+				returnTicket.setTicketPrice(price.getText());
 				tickets.add(returnTicket);
 			}
 
@@ -163,6 +144,21 @@ public class ResultsTicketPage extends Page {
 		} while (checkLastTicket(tickets, returnTicket));
 
 		return tickets;
+	}
+	
+
+	public void printOneWayTickets(List<TicketWay> tickets) {
+		for (TicketWay ticket : tickets) {
+			System.out.println(ticket.toString());
+		}
+	}
+	
+
+	public void printReturnTickets(List<TicketWay> tickets) {
+
+		for (TicketWay ticket : tickets) {
+			System.out.println(ticket.toString());
+		}
 	}
 
 }

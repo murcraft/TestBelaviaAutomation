@@ -2,23 +2,21 @@ package by.htp.kyzniatsova.entity;
 
 import java.io.Serializable;
 
-public class TicketWay implements Serializable {
+public class TicketWay implements Serializable, Comparable<TicketWay> {
 
 	private static final long serialVersionUID = 9219949723385721862L;
 	
 	private String departureDate;
-	private String departureTime;
-	private String flightClass;
+	private String returnDate;
 	private String ticketPrice;
 	
 	public TicketWay() {
 	}
 	
-	public TicketWay(String departureDate, String departureTime, String flightClass, String ticketPrice) {
+	public TicketWay(String departureDate, String returnDate, String ticketPrice) {
 		super();
 		this.departureDate = departureDate;
-		this.departureTime = departureTime;
-		this.flightClass = flightClass;
+		this.returnDate = returnDate;
 		this.ticketPrice = ticketPrice;
 	}
 	
@@ -30,20 +28,12 @@ public class TicketWay implements Serializable {
 		this.departureDate = departureDate;
 	}
 	
-	public String getDepartureTime() {
-		return departureTime;
+	public String getReturnDate() {
+		return returnDate;
 	}
 	
-	public void setDepartureTime(String departureTime) {
-		this.departureTime = departureTime;
-	}
-	
-	public String getFlightClass() {
-		return flightClass;
-	}
-	
-	public void setFlightClass(String flightClass) {
-		this.flightClass = flightClass;
+	public void setReturnDate(String returnDate) {
+		this.returnDate = returnDate;
 	}
 	
 	public String getTicketPrice() {
@@ -59,12 +49,11 @@ public class TicketWay implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
-		result = prime * result + ((departureTime == null) ? 0 : departureTime.hashCode());
-		result = prime * result + ((flightClass == null) ? 0 : flightClass.hashCode());
+		result = prime * result + ((returnDate == null) ? 0 : returnDate.hashCode());
 		result = prime * result + ((ticketPrice == null) ? 0 : ticketPrice.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -79,15 +68,10 @@ public class TicketWay implements Serializable {
 				return false;
 		} else if (!departureDate.equals(other.departureDate))
 			return false;
-		if (departureTime == null) {
-			if (other.departureTime != null)
+		if (returnDate == null) {
+			if (other.returnDate != null)
 				return false;
-		} else if (!departureTime.equals(other.departureTime))
-			return false;
-		if (flightClass == null) {
-			if (other.flightClass != null)
-				return false;
-		} else if (!flightClass.equals(other.flightClass))
+		} else if (!returnDate.equals(other.returnDate))
 			return false;
 		if (ticketPrice == null) {
 			if (other.ticketPrice != null)
@@ -96,12 +80,27 @@ public class TicketWay implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Ticket [departureDate=" + departureDate + ", departureTime=" + departureTime + ", flightClass="
-				+ flightClass + ", ticketPrice=" + ticketPrice + "]";
+		return "TicketWay [departureDate=" + departureDate + ", departureTime=" + returnDate + ", ticketPrice="
+				+ ticketPrice + "]";
 	}
-		
+	
+	public int compareTo(TicketWay ticket) {
+		String pattern = "[^0-9]";
+		String thisPrise = this.ticketPrice.replaceAll(pattern, "");
+		int price = Integer.parseInt(thisPrise);
+
+		String result = ticket.getTicketPrice().replaceAll(pattern, "");
+		int otherPrice = Integer.parseInt(result);
+		if (price > otherPrice) {
+			return 1;
+		} else if (price < otherPrice) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
 
 }
