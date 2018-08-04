@@ -10,7 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class MainPage extends Page {
 
-	private static final String URL = "https://belavia.by";
+	private static final String URL = "https://belavia.by/";
 
 	@FindBy(xpath = "//div[@class='wrapper ui-trigger-input']/a[@class='trigger']")
 	private List <WebElement> fieldsCityes;

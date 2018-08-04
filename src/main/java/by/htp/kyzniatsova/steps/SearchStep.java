@@ -64,7 +64,6 @@ public class SearchStep {
 	}
 
 	public ResultsTicketPage getResultsOfReturnTicketSearch() {
-		
 		ResultsTicketPage bookingPage = new ResultsTicketPage(driver);
 		List<TicketWay> tickets = bookingPage.getTicketsToBack();
 		bookingPage.sortFlightDates(tickets);

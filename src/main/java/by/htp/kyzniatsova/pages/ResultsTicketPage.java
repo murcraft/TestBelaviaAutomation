@@ -155,7 +155,6 @@ public class ResultsTicketPage extends Page {
 	
 
 	public void printReturnTickets(List<TicketWay> tickets) {
-
 		for (TicketWay ticket : tickets) {
 			System.out.println(ticket.toString());
 		}

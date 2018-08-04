@@ -3,22 +3,8 @@
 
 <suite name="SmokeTest">
  <test name="SmokeTest">
- 
-  <parameter name="date" value="1"/>
-   
-     <groups>
-      <run>
-       <include name="on"/>
-      </run>
-    </groups>
-    
-    <packages>
-     <package name="pages.*"/>
-    </packages>
-    
-<classes>
-  <class name="pages.MainPage"/>
-  </classes>
-
+ 	<classes>
+		<class name="by.htp.kyzniatsova.test.*" />
+	</classes>
  </test>
 </suite>
