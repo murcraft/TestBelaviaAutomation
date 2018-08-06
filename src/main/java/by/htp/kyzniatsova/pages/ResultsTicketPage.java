@@ -138,6 +138,7 @@ public class ResultsTicketPage extends Page {
 	
 	public void searchTicketPrices() {
 		if(checkEmptyTicket() != null) {
+//		WebDriverWait wait = new WebDriverWait(driver, 10);
 			System.out.println(checkEmptyTicket());
 		System.out.println(getFlightTime());
 		List<WebElement> elements = driver.findElements(labelElement);
@@ -153,6 +154,7 @@ public class ResultsTicketPage extends Page {
 	
 	public void searchTicketClasses() {
 		if(checkEmptyTicket() != null) {
+//		WebDriverWait wait = new WebDriverWait(driver, 10);
 		List<WebElement> elements = driver.findElements(inputElement);
 		for(WebElement input : elements) {
 			if(existsElement(inputElement)){

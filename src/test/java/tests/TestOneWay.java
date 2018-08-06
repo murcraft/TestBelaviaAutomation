@@ -2,12 +2,22 @@ package tests;
 
 import org.testng.annotations.*;
 
+<<<<<<< HEAD
 import by.htp.kyzniatsova.pages.ResultsTicketPage;
 import by.htp.kyzniatsova.steps.SearchStep;
 
 public class TestOneWay extends BaseTest {
 	
 	private SearchStep steps;
+=======
+import by.htp.kyzniatsova.steps.SearchOneWayStep;
+import by.htp.kyzniatsova.steps.ParseTicketsStep;
+
+
+public class TestOneWay {
+	private SearchOneWayStep step;
+	private ParseTicketsStep stepic;
+>>>>>>> parent of 95c5795... Was added test for link to two destinations
 	private final String DESTINATION1 = "Ã»Õ— ";
 	private final String DESTINATION2 = "–»√¿";
 	private final String KIND = "One";

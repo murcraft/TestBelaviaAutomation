@@ -21,6 +21,7 @@ import by.htp.kyzniatsova.pages.ResultsTicketPage;
 public class SearchOneWayStep extends AbstractStep {
 	
 	private WebDriver driver;
+
 	private final Logger logger = LogManager.getRootLogger();
 	
 	@Override
@@ -52,14 +53,13 @@ public class SearchOneWayStep extends AbstractStep {
 		Destinations dest = new Destinations(driver);
 		dest.chooseDepartCity();
 		dest.chooseDestinationCity();
-		dest.chooseLabelDestOneSide();
+		mainPage.chooseRadioButtonSides();
 	}
 	
 	public void chooseDate(String date) {
 		CalendarField cal = new CalendarField(driver);
-		cal.clickInputCalendar();
-		cal.parseDatesTo();
-		cal.chooseDateTo(date);
+		cal.parseDates();
+		cal.chooseDate(date);
 	}
 	
 	public ResultsTicketPage clickButtonSearch() {
