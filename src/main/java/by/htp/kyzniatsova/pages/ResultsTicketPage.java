@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+<<<<<<< HEAD
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+=======
+>>>>>>> parent of da1c59c... Were added steps for search prices
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,13 +24,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+<<<<<<< HEAD
 import by.htp.kyzniatsova.entity.TicketWay;
+=======
+import by.htp.kyzniatsova.entity.Ticket;
+>>>>>>> parent of da1c59c... Were added steps for search prices
 
 public class ResultsTicketPage extends Page {
 
 	@FindBy(linkText = "Fare calendar")
 	private WebElement fareCalendar;
 
+<<<<<<< HEAD
 	@FindBy(xpath = "//div[@class='price']//input")
 	private List<WebElement> visibleDates;
 
@@ -38,6 +46,15 @@ public class ResultsTicketPage extends Page {
 	private WebElement nextButton;
 
 	private WebDriverWait wait = new WebDriverWait(driver, 10);
+=======
+	private final By inputBefore = By.xpath("//div[contains(@class,'fare')]/label/preceding-sibling::input");
+	private final By inputFromMain = By.cssSelector("#OriginLocation_Combobox");
+	
+	private final By valueDay = By.xpath("//div[@class='hdr']/.//h3");
+	private final By valueTime = By.xpath("//div[@class='departure']//strong");
+
+	private Ticket ticket = new Ticket();
+>>>>>>> parent of da1c59c... Were added steps for search prices
 
 	public ResultsTicketPage(WebDriver driver) {
 		super(driver);
@@ -74,6 +91,7 @@ public class ResultsTicketPage extends Page {
 
 		return tickets;
 	}
+<<<<<<< HEAD
 
 	public Boolean checkLastTicket(List<TicketWay> tickets, TicketWay ticket) {
 		Boolean shouldClickNext = false;
@@ -115,6 +133,44 @@ public class ResultsTicketPage extends Page {
 			}
 		});
 
+=======
+	
+	
+	public void searchTicketPrices() {
+		if(checkEmptyTicket() != null) {
+			System.out.println(checkEmptyTicket());
+		System.out.println(getFlightTime());
+		List<WebElement> elements = driver.findElements(labelElement);
+		for(WebElement label : elements) {
+			if(existsElement(inputElement)){
+				System.out.println(label.getText());
+			}
+		}
+		searchTicketClasses();
+		}
+		
+	}
+	
+	public void searchTicketClasses() {
+		if(checkEmptyTicket() != null) {
+		List<WebElement> elements = driver.findElements(inputElement);
+		for(WebElement input : elements) {
+			if(existsElement(inputElement)){
+				System.out.println(input.getAttribute("id"));
+			}
+		}
+		}
+		
+	}
+	
+	private boolean existsElement(By id) {
+	    try {
+	        driver.findElement(id);
+	        return true;
+	    } catch (NoSuchElementException e) {
+	    	return false;
+	    }
+>>>>>>> parent of da1c59c... Were added steps for search prices
 	}
 
 	public List<TicketWay> getTicketsToBack() {
@@ -146,6 +202,7 @@ public class ResultsTicketPage extends Page {
 		return tickets;
 	}
 	
+<<<<<<< HEAD
 
 	public void printOneWayTickets(List<TicketWay> tickets) {
 		for (TicketWay ticket : tickets) {
@@ -159,5 +216,19 @@ public class ResultsTicketPage extends Page {
 			System.out.println(ticket.toString());
 		}
 	}
+=======
+	public MainPage ClickReturnButton() {
+		WebDriverWait waitResPage = new WebDriverWait(driver, 30);
+		waitResPage.until(ExpectedConditions.elementToBeClickable(returnButton));
+		driver.findElement(returnButton).click();
+		waitResPage.until(ExpectedConditions.visibilityOfElementLocated(inputFromMain));
+		return new MainPage(driver);
+	}
+	
+	
+	
+	
+	
+>>>>>>> parent of da1c59c... Were added steps for search prices
 
 }

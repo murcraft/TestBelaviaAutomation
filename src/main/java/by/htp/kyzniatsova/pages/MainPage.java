@@ -71,9 +71,19 @@ public class MainPage extends Page {
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	public void clickSearchButton() {
 		searchButton.click();
+=======
+	
+	public ResultsTicketPage putButton() {
+		WebDriverWait waitResPage = new WebDriverWait(driver, 30);
+		waitResPage.until(ExpectedConditions.elementToBeClickable(buttonFind));
+		driver.findElement(buttonFind).click();
+		waitResPage.until(ExpectedConditions.visibilityOfElementLocated(buttonResultsNext));
+		return new ResultsTicketPage(driver);
+>>>>>>> parent of da1c59c... Were added steps for search prices
 	}
 
 	public void setOneWayTicketType() {
