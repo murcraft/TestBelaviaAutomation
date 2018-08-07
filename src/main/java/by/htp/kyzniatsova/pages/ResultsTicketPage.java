@@ -23,7 +23,6 @@ public class ResultsTicketPage extends Page {
 
 	private final By flightCategory = By.xpath("//div[@class='fare-avail ui-corner-all']/.//a");
 	private final By priceLabel = By.xpath("//div[@class='fare-avail ui-corner-all']/.//label");
-	
 	private final By tariffsCalendarLink = By.xpath("//div[@class='col-mb-5 text-right']/a");
 	
 	private final By directionContainer = By.xpath("//div[@class='direction']");

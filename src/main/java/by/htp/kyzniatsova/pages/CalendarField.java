@@ -11,13 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CalendarField extends MainPage {
 
-	private final By inputDateTo = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
-	private final By getLeftMonthYear = By.xpath("//div[@id='calendar']/div/div[1]/div/div");
-	private final By getRightMonthYear = By.xpath("//div[@id='calendar']/div/div[2]/div/div");
-	private final By getPreviousCalendarMonth = By.xpath("//div[@id='calendar']/div/div[1]/div/a");
-	private final By getNextCalendarMonth = By.xpath("//div[@id='calendar']/div/div[2]/div/a");
-	private final By getDayOfMonth = By.xpath("//*[@id='calendar']/div/div[1]/table/tbody/tr[1]/td[3]/a");
-	
 	private final By inputLeftCalendar = By.xpath("//div[@id='step-2']/div[2]/div[1]/div/a");
 	private final By getTableTd = By.xpath("//div[@id='calendar']/div/div[contains(@class,'ui-datepicker-group-first')]/table/descendant::td/a");
 	
@@ -26,16 +19,6 @@ public class CalendarField extends MainPage {
 		PageFactory.initElements(this.driver, this);
 	}
 
-	public String chooseMonthRight() {
-		driver.findElement(inputDateTo).click();
-		return driver.findElement(getLeftMonthYear).getText();
-	}
-	
-	public String chooseMonthLeft() {
-		driver.findElement(inputDateTo).click();
-		return driver.findElement(getRightMonthYear).getText();
-	}
-	
 	
 	public void parseDates() {
 		WebDriverWait waitDate = new WebDriverWait(driver, 30);
