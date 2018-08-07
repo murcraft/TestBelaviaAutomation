@@ -40,6 +40,8 @@ public class MainPage extends Page {
 	private final By getTableTd = By.xpath("//div[@id='calendar']/div/div[contains(@class,'ui-datepicker-group-first')]/table/descendant::td/a");
 	private final By buttonResultsNext = By.xpath("//button[contains(@class, 'btn btn-b2-green')]");
 
+	private final By valueTime = By.xpath("//div[@class='departure']//strong");
+
 	public MainPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(this.driver, this);
@@ -67,5 +69,10 @@ public class MainPage extends Page {
 		waitResPage.until(ExpectedConditions.visibilityOfElementLocated(buttonResultsNext));
 		return new ResultsTicketPage(driver);
 
+	}
+	
+	public String getSiteName() {
+		String supportLink = driver.findElement(getSupportLink).getText();
+		return supportLink;
 	}
 }

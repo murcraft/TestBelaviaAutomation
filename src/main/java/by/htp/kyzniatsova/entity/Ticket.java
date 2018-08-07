@@ -1,20 +1,22 @@
 package by.htp.kyzniatsova.entity;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 public class Ticket implements Serializable {
 
 	private static final long serialVersionUID = 9219949723385721862L;
 	
-	private String departureDate;
+	private Calendar departureDate;
 	private String departureTime;
 	private String flightClass;
-	private String ticketPrice;
+	private double ticketPrice;
 	
 	public Ticket() {
+		
 	}
 	
-	public Ticket(String departureDate, String departureTime, String flightClass, String ticketPrice) {
+	public Ticket(Calendar departureDate, String departureTime, String flightClass, double ticketPrice) {
 		super();
 		this.departureDate = departureDate;
 		this.departureTime = departureTime;
@@ -22,11 +24,11 @@ public class Ticket implements Serializable {
 		this.ticketPrice = ticketPrice;
 	}
 	
-	public String getDepartureDate() {
+	public Calendar getDepartureDate() {
 		return departureDate;
 	}
 	
-	public void setDepartureDate(String departureDate) {
+	public void setDepartureDate(Calendar departureDate) {
 		this.departureDate = departureDate;
 	}
 	
@@ -46,14 +48,14 @@ public class Ticket implements Serializable {
 		this.flightClass = flightClass;
 	}
 	
-	public String getTicketPrice() {
+	public double getTicketPrice() {
 		return ticketPrice;
 	}
 	
-	public void setTicketPrice(String ticketPrice) {
+	public void setTicketPrice(double ticketPrice) {
 		this.ticketPrice = ticketPrice;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -61,10 +63,12 @@ public class Ticket implements Serializable {
 		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
 		result = prime * result + ((departureTime == null) ? 0 : departureTime.hashCode());
 		result = prime * result + ((flightClass == null) ? 0 : flightClass.hashCode());
-		result = prime * result + ((ticketPrice == null) ? 0 : ticketPrice.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(ticketPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -89,14 +93,11 @@ public class Ticket implements Serializable {
 				return false;
 		} else if (!flightClass.equals(other.flightClass))
 			return false;
-		if (ticketPrice == null) {
-			if (other.ticketPrice != null)
-				return false;
-		} else if (!ticketPrice.equals(other.ticketPrice))
+		if (Double.doubleToLongBits(ticketPrice) != Double.doubleToLongBits(other.ticketPrice))
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Ticket [departureDate=" + departureDate + ", departureTime=" + departureTime + ", flightClass="

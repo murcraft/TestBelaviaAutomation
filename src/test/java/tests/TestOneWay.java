@@ -1,50 +1,46 @@
 package tests;
 
+import org.testng.Assert;
 import org.testng.annotations.*;
 
-<<<<<<< HEAD
 import by.htp.kyzniatsova.pages.ResultsTicketPage;
 import by.htp.kyzniatsova.steps.SearchStep;
+import by.htp.kyzniatsova.steps.SearchOneWayStep;
+
 
 public class TestOneWay extends BaseTest {
 	
-	private SearchStep steps;
-=======
-import by.htp.kyzniatsova.steps.SearchOneWayStep;
-import by.htp.kyzniatsova.steps.ParseTicketsStep;
-
-
-public class TestOneWay {
 	private SearchOneWayStep step;
-	private ParseTicketsStep stepic;
->>>>>>> parent of 95c5795... Was added test for link to two destinations
+
 	private final String DESTINATION1 = "Ã»Õ— ";
 	private final String DESTINATION2 = "–»√¿";
-	private final String KIND = "One";
-
-	@Test
-	public void searchOneWayTicketToRiga() {
-		
-		steps.openPage();
-		steps.setDepatureAndDestination(DESTINATION1, DESTINATION2);
-		steps.setOneWayOrReturnTicket(KIND);
-		steps.searchFlight();
-		ResultsTicketPage resPage = steps.getResultsOfOneWayTicketSearch();
+	private final String supportLink = "support@belavia.by";
 	
-<<<<<<< HEAD
+	private SearchStep steps;
+
+	@BeforeMethod(description = "Init browser")
+	public void setUp() {
+		step = new SearchOneWayStep();
+		step.initBrowser();
+	}
+	
+	
+	@Test(priority = 1, description = "ChooseTab")
+	public void testOpenPage() {
+		step.openMainPage();
+		String value = step. getPageName();
+		Assert.assertEquals(supportLink, value);
+	}
+	
+	@Test(priority = 2, description = "Fill date")
+	public void testChooseDestinations() {
+		step.fillDestination(DESTINATION1, DESTINATION2);
 	}
 
-=======
 	@Test(priority = 3, description = "Fill date")
-	public void testChooseDate() {
+	public void testChooseDates() {
 		step.chooseDate("10");
-	}
-
-	
-	@Test(priority = 4, description = "Click on the button search")
-	public void testClickButtonSearch() {
-//		step.clickButtonSearch();
-		step.searchTickets();
+		step.clickButtonSearch();
 	}
 	
 //	@Test(priority = 5, description = "go to seach results")
@@ -62,6 +58,4 @@ public class TestOneWay {
 		step.closeDriver();
 	}
 
-
->>>>>>> parent of da1c59c... Were added steps for search prices
 }

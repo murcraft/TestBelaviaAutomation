@@ -42,8 +42,8 @@ public class SearchOneWayStep extends AbstractStep {
 	
 	public String getPageName() {
 		MainPage mainPage = new MainPage(driver);
-		String actualUsername = mainPage.getSiteName().trim().toLowerCase();
-		return actualUsername;
+		String supportLink = mainPage.getSiteName().trim().toLowerCase();
+		return supportLink;
 	}
 	
 
@@ -67,11 +67,11 @@ public class SearchOneWayStep extends AbstractStep {
 		mainPage.putButton();
 		return new ResultsTicketPage(driver);
 	}
-	
+/*	
 	public void searchTickets() {
 		MainPage mainPage = new MainPage(driver);
 		ResultsTicketPage resultsPage = mainPage.putButton();
 		resultsPage.searchTicketPrices();
 	}
-
+*/
 }
