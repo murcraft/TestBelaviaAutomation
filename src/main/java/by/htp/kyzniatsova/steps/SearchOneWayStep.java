@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import by.htp.kyzniatsova.driver.DriverSingleton;
@@ -24,8 +22,6 @@ public class SearchOneWayStep extends AbstractStep {
 	private Calendar dateOnClickInRow;
 	private Calendar dateOnClickInColumn;
 	private final String currentURL = "https://booking.belavia.by/Select/Calendar";
-
-	private final Logger logger = LogManager.getRootLogger();
 	
 	@Override
 	public void initBrowser() {
@@ -58,16 +54,15 @@ public class SearchOneWayStep extends AbstractStep {
 		mainPage.chooseRadioButtonSides();
 	}
 	
-	public void chooseDateInOneWay(String date) {
+	public void chooseDateInOneWay() {
 		CalendarField cal = new CalendarField(driver);
 		cal.parseDates();
-		cal.chooseDate(date);
+		cal.chooseDate();
 	}
 	
-	public void chooseDateInTwoWays(String dateReturn, int monthRange) {
+	public void chooseDateInTwoWays(Calendar dateReturn, int monthRange) {
 		CalendarField cal = new CalendarField(driver);
-		cal.parseDates();
-		cal.chooseDate(dateReturn);
+		cal.chooseDate();
 	}
 	
 	public ResultsTicketPage clickButtonSearch() {

@@ -11,7 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import by.htp.kyzniatsova.entity.Ticket;
 
@@ -26,8 +25,6 @@ public class ResultsTicketPage extends Page {
 	private final By tariffsCalendarLink = By.xpath("//div[@class='col-mb-5 text-right']/a");
 	
 	private final By directionContainer = By.xpath("//div[@class='direction']");
-
-	private WebDriverWait wait = new WebDriverWait(driver, 10);
 
 	public ResultsTicketPage(WebDriver driver) {
 		super(driver);

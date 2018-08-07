@@ -17,7 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TicketsTablePage extends Page {
 	
-	private final By dateInColumns = By.xpath("//div[@class='h-outbound hidden-xs clear']/div"); ///div[@class='h-outbound hidden-xs clear']/div ////div[@class='h-outbound hidden-xs clear']/div
+	private final By dateInColumns = By.xpath("//div[@class='h-outbound hidden-xs clear']/div");
 	private final By ticketsInColumns = By.xpath("//div[@class='b-matrix clear']/div");
 	private final By ticketPrices = By.xpath("//div[@class='details']/div[@class='price']");
 	private final By ticketsInputs = By.xpath("//div[@class='details']/div/div/input");

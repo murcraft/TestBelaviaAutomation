@@ -4,19 +4,20 @@
 <suite name="SmokeTest">
  <test name="SmokeTest">
  
- 	<parameter name="DepartCity" value="МИНСК" />
-	<parameter name="ArriveCity" value="РИГА" />
-	<parameter name="Months" value="3" />
+ 	<parameter name="DepartCity" value="МИНСК"/>
+	<parameter name="ArriveCity" value="РИГА"/>
+	<parameter name="Months" value="3"/>
 
 	<groups>
 		<run>
-			<include name="tickets to both sides" />
-			<exclude name="one way ticket" />
+			<include name="two sides"/>
+			<exclude name="one way"/>
 		</run>
 	</groups>
 
  	<classes>
-		<class name="by.htp.kyzniatsova.test.*" />
+		<class name="by.htp.kyzniatsova.test.*"/>
 	</classes>
  </test>
 </suite>
+

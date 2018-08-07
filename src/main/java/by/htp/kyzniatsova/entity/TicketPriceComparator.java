@@ -2,7 +2,7 @@ package by.htp.kyzniatsova.entity;
 
 import java.util.Comparator;
 
-public class TicketCostComparator implements Comparator<Ticket> {
+public class TicketPriceComparator implements Comparator<Ticket> {
 
 	public int compare(Ticket ticket1, Ticket ticket2) {
 		if(ticket1.getTicketPrice() > ticket2.getTicketPrice()) {
