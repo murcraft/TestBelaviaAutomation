@@ -17,8 +17,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TicketsTablePage extends Page {
 	
+	private final By dateInColumns = By.xpath("//div[@class='h-outbound hidden-xs clear']/div"); ///div[@class='h-outbound hidden-xs clear']/div ////div[@class='h-outbound hidden-xs clear']/div
+	private final By ticketsInColumns = By.xpath("//div[@class='b-matrix clear']/div");
+	private final By ticketPrices = By.xpath("//div[@class='details']/div[@class='price']");
+	private final By ticketsInputs = By.xpath("//div[@class='details']/div/div/input");
+	private final By ticketsAllColumns = By.xpath("//div[@class='details']");
 	
-	private WebDriverWait simpleWait;
+	
+	private final By nextButton = By.xpath("//div[@class='col-mb-6 text-right']/button");
+	
+	
+	private WebDriverWait wait = new WebDriverWait(driver, 10);
 	private String fieldDate;
 
 	public TicketsTablePage(WebDriver driver) {
@@ -35,47 +44,45 @@ public class TicketsTablePage extends Page {
 	}
 
 	public void clickOnTicket(String availibleDate) {
-		List<WebElement> dates = driver.findElements(By.xpath("//div[@class='h-outbound hidden-xs clear']/div"));
-		dates.remove(0);
-		List<WebElement> tickets = driver.findElements(By.xpath("//div[@class='b-matrix clear']/div"));
-		for (int i = 0; i < dates.size(); i++) {
-			if (dates.get(i).getAttribute("id").contains(fieldDate)) {
+		List<WebElement> dateFields = driver.findElements(dateInColumns);
+		dateFields.remove(0);
+		List<WebElement> tickets = driver.findElements(ticketsInColumns);
+		
+		for (int i = 0; i < dateFields.size(); i++) {
+			if (dateFields.get(i).getAttribute("id").contains(fieldDate)) {
 				WebElement cost = tickets.get(i).findElement(By.className("price"));
 				if (cost != null) {
 					cost.click();
-					simpleWait.until(ExpectedConditions.attributeToBe(cost, "class", "price selected"));
-					clickOnButtonNext();
+					wait.until(ExpectedConditions.attributeToBe(cost, "class", "price selected"));
+					clickOnNextButton();
 					break;
 				}
 			}
-
 		}
-
 	}
 
-	public void clickOnTicketInRow(String availibleDate) {
-		List<WebElement> dates = driver.findElements(By.xpath("//div[@class='h-outbound hidden-xs clear']/div"));
+	public void clickOnTicketFieldInRow(String date) {
+		List<WebElement> dates = driver.findElements(dateInColumns);
 		dates.remove(0);
-		List<WebElement> tickets = driver.findElements(By.xpath("//div[@class='details']/div[@class='price']"));
+		List<WebElement> tickets = driver.findElements(ticketPrices);
 		Pattern pattern = Pattern.compile("(\\d{2}-?){3}");
 		for (int j = 0; j < dates.size(); j++) {
-			if (dates.get(j).getAttribute("id").contains(availibleDate)) {
-				String[] splitedValues = availibleDate.split("_");
-				if (splitedValues.length > 1) {
-					availibleDate = splitedValues[1];
+			if (dates.get(j).getAttribute("id").contains(date)) {
+				String[] splitDates = date.split("_");
+				if (splitDates.length > 1) {
+					date = splitDates[1];
 				}
 				for (int k = 0; k < tickets.size(); k++) {
 					WebElement input = tickets.get(k).findElement(By.tagName("input"));
-					String date = input.getAttribute("value");
-					Matcher matcher = pattern.matcher(date);
+					String dateValue = input.getAttribute("value");
+					Matcher matcher = pattern.matcher(dateValue);
 					matcher.find();
-					date = matcher.group(0);
-					if (date.contains(availibleDate)) {
+					dateValue = matcher.group(0);
+					if (dateValue.contains(dateValue)) {
 						if (input != null) {
 							tickets.get(k).click();
-							simpleWait
-									.until(ExpectedConditions.attributeToBe(tickets.get(k), "class", "price selected"));
-							clickOnButtonNext();
+							wait.until(ExpectedConditions.attributeToBe(tickets.get(k), "class", "price selected"));
+							clickOnNextButton();
 							j = dates.size();
 							break;
 						}
@@ -85,28 +92,28 @@ public class TicketsTablePage extends Page {
 		}
 	}
 
-	public void clickOnTicketInColumn(String verticalAvailibleDate) {
-		List<WebElement> dates = driver.findElements(By.xpath("//div[@class='h-outbound hidden-xs clear']/div"));
+	public void clickOnTicketFieldInColumn(String date) {
+		List<WebElement> dates = driver.findElements(dateInColumns);
 		dates.remove(0);
-		List<WebElement> datesVertical = driver.findElements(By.xpath("//div[@class='h-inbound hidden-xs clear']/div"));
+		List<WebElement> datesInColumns = driver.findElements(dateInColumns);
 		dates.remove(0);
-		List<WebElement> tickets = driver.findElements(By.xpath("//div[@class='details']/div/div/input"));
+		List<WebElement> tickets = driver.findElements(ticketsInputs);
 		for (int i = 0; i < dates.size(); i++) {
 			if (dates.get(i).getAttribute("id").contains(fieldDate)) {
-				for (int j = 0; j < datesVertical.size(); j++) {
-					if (datesVertical.get(j).getAttribute("id").contains(verticalAvailibleDate)) {
-						String[] splitedValues = verticalAvailibleDate.split("_");
-						if (splitedValues.length > 1) {
-							verticalAvailibleDate = splitedValues[1];
+				for (int j = 0; j < datesInColumns.size(); j++) {
+					if (datesInColumns.get(j).getAttribute("id").contains(date)) {
+						String[] splitDate = date.split("_");
+						if (splitDate.length > 1) {
+							date = splitDate[1];
 						}
 						for (int k = 0; k < tickets.size(); k++) {
-							if (tickets.get(k).getAttribute("value").contains(verticalAvailibleDate)) {
+							if (tickets.get(k).getAttribute("value").contains(date)) {
 								WebElement cost = tickets.get(k).findElement(By.xpath("parent::*/parent::*"));
 								if (cost != null) {
 									cost.click();
-									simpleWait.until(ExpectedConditions.attributeToBe(cost, "class", "price selected"));
-									clickOnButtonNext();
-									j = datesVertical.size();
+									wait.until(ExpectedConditions.attributeToBe(cost, "class", "price selected"));
+									clickOnNextButton();
+									j = datesInColumns.size();
 									i = dates.size();
 									break;
 								}
@@ -115,87 +122,85 @@ public class TicketsTablePage extends Page {
 					}
 				}
 			}
-
 		}
 
 	}
-	public String getNextClickableDate(Calendar lastClickedDate) {
-		String returnStatement = "";
-		List<WebElement> dates = driver.findElements(By.xpath("//div[@class='h-outbound hidden-xs clear']/div"));
+	public String getNextDateInRowOnClick(Calendar lastDateOnClick) {
+		List<WebElement> dates = driver.findElements(dateInColumns);
 		dates.remove(0);
-		List<WebElement> tickets = driver.findElements(By.xpath("//div[@class='details']"));
+		
+		String lastDate = "";
+		
+		List<WebElement> tickets = driver.findElements(ticketsAllColumns);
 		for (int i = 0; i < dates.size(); i++) {
-			String iterableDateValue = dates.get(i).getAttribute("id");
-			String[] splitedValues = iterableDateValue.split("_");
-			if (splitedValues.length > 1) {
-				iterableDateValue = splitedValues[1];
+			String dateValue = dates.get(i).getAttribute("id");
+			String[] splitDate = dateValue.split("_");
+			if (splitDate.length > 1) {
+				dateValue = splitDate[1];
 			}
 			SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
-			Calendar currentIterableDate = new GregorianCalendar();
+			Calendar currDate = new GregorianCalendar();
 			try {
-				currentIterableDate.setTime(format.parse(iterableDateValue));
+				currDate.setTime(format.parse(dateValue));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			if (currentIterableDate.after(lastClickedDate)) {
-				List<WebElement> element = tickets.get(i).findElements(By.tagName("div"));
-				for (int j = 0; j < element.size(); j++) {
-					if (element.get(j).getAttribute("class").equals("price")) {
-						returnStatement = dates.get(i).getAttribute("id");
-						lastClickedDate.setTime(currentIterableDate.getTime());
+			if (currDate.after(lastDateOnClick)) {
+				List<WebElement> elements = tickets.get(i).findElements(By.tagName("div"));
+				for (int j = 0; j < elements.size(); j++) {
+					if (elements.get(j).getAttribute("class").equals("price")) {
+						lastDate = dates.get(i).getAttribute("id");
+						lastDateOnClick.setTime(currDate.getTime());
 						i = dates.size();
 						break;
 					}
 				}
 			}
 		}
-		return returnStatement;
+		return lastDate;
 	}
 
-	public String getNextClickableDateInColumn(Calendar lastClickedDate) {
-		String returnStatement = "";
-		List<WebElement> dates = driver.findElements(By.xpath("//div[@class='h-inbound hidden-xs clear']/div"));
+	public String getNextDateInColumnOnClick(Calendar lastDate) {
+		String lastDateState = "";
+		List<WebElement> dates = driver.findElements(dateInColumns);
 		dates.remove(0);
 		for (int i = dates.size() - 1; i >= 0; i--) {
-			String iterableDateValue = dates.get(i).getAttribute("id");
-			String[] splitedValues = iterableDateValue.split("_");
-			if (splitedValues.length > 1) {
-				iterableDateValue = splitedValues[1];
+			String dateValue = dates.get(i).getAttribute("id");
+			String[] splitDates = dateValue.split("_");
+			if (splitDates.length > 1) {
+				dateValue = splitDates[1];
 			}
-			SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
-			Calendar currentIterableDate = new GregorianCalendar();
+			SimpleDateFormat formatter = new SimpleDateFormat("yy-MM-dd");
+			Calendar currParsingDate = new GregorianCalendar();
 			try {
-				currentIterableDate.setTime(format.parse(iterableDateValue));
+				currParsingDate.setTime(formatter.parse(dateValue));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			if (currentIterableDate.before(lastClickedDate)) {
-				List<WebElement> element = driver.findElements(By.xpath("//div[@class='details']/div[@class='price']"));
+			if (currParsingDate.before(lastDate)) {
+				List<WebElement> element = driver.findElements(ticketPrices);
 				for (int j = 0; j < element.size(); j++) {
 					if (element.get(j).getAttribute("class").equals("price")) {
 						WebElement elWithPrice = element.get(j).findElement(By.tagName("input"));
-						if (elWithPrice.getAttribute("value").contains(iterableDateValue)) {
-							returnStatement = dates.get(i).getAttribute("id");
-							lastClickedDate.setTime(currentIterableDate.getTime());
+						if (elWithPrice.getAttribute("value").contains(dateValue)) {
+							lastDateState = dates.get(i).getAttribute("id");
+							lastDate.setTime(currParsingDate.getTime());
 							i = -1;
 							break;
 						}
 					}
 				}
 			}
-
 		}
-
-		return returnStatement;
+		return lastDateState;
 	}
 
-	public void clickOnButtonNext() {
-		driver.findElement(By.xpath("//div[@class='col-mb-6 text-right']/button")).click();
+	public void clickOnNextButton() {
+		driver.findElement(nextButton).click();
 	}
 
 	@Override
 	public void openPage() {
-		// TODO Auto-generated method stub
 		
 	}
 
