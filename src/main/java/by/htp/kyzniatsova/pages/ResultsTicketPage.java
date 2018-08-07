@@ -18,25 +18,17 @@ import by.htp.kyzniatsova.entity.Ticket;
 
 public class ResultsTicketPage extends Page {
 
-	private final By inputBefore = By.xpath("//div[contains(@class,'fare')]/label/preceding-sibling::input");
-	private final By inputFromMain = By.cssSelector("#OriginLocation_Combobox");
-	
 	private final By valueDay = By.xpath("//div[@class='hdr']/.//h3");
-	private final By valueDepartTime = By.xpath("//div[@class='departure']//strong"); ////*[@id="outbound"]/div[3]/div/div[1]/div[2]/strong
+	private final By valueDepartTime = By.xpath("//div[@class='departure']//strong"); 
 
-	
 	private final By flightCategory = By.xpath("//div[@class='fare-avail ui-corner-all']/.//a");
 	private final By priceLabel = By.xpath("//div[@class='fare-avail ui-corner-all']/.//label");
 	
 	private final By tariffsCalendarLink = By.xpath("//div[@class='col-mb-5 text-right']/a");
 	
 	private final By directionContainer = By.xpath("//div[@class='direction']");
-	
-	private WebElement nextButton;
 
 	private WebDriverWait wait = new WebDriverWait(driver, 10);
-	private Ticket ticket = new Ticket();
-
 
 	public ResultsTicketPage(WebDriver driver) {
 		super(driver);
@@ -74,12 +66,15 @@ public class ResultsTicketPage extends Page {
 		List<WebElement> prices = driver.findElements(priceLabel);
 		
 		for (int i = 0; i < flightsCategories.size(); i++) {
+			
 			Ticket ticket = new Ticket();
 			ticket.setDepartureDate(departDate);
 			ticket.setDepartureTime(time);
 			ticket.setFlightClass(flightsCategories.get(i).getAttribute("innerText"));
+			
 			String priceValue = prices.get(i).getText();
 			priceValue = priceValue.replace(",", ".");
+			
 			String[] splitPrice = priceValue.split(" ");
 			double price = Double.parseDouble(splitPrice[0]);
 			ticket.setTicketPrice(price);
@@ -106,7 +101,7 @@ public class ResultsTicketPage extends Page {
 		return departDate;
 	}
 
-	public List<Ticket> getAvailibleTicketsOnArrivalDate() {
+	public List<Ticket> getTicketsOnArrivalDate() {
 		List<Ticket> tickets = new ArrayList<Ticket>();
 		
 		Calendar date = getArrivalDate();
@@ -120,8 +115,10 @@ public class ResultsTicketPage extends Page {
 			ticket.setDepartureDate(date);
 			ticket.setDepartureTime(time);
 			ticket.setFlightClass(flightsCategories.get(i).getAttribute("innerText"));
+			
 			String costStr = costs.get(i).getText();
 			costStr = costStr.replace(",", ".");
+			
 			String[] result = costStr.split(" ");
 			double cost = Double.parseDouble(result[0]);
 			ticket.setTicketPrice(cost);

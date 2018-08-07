@@ -28,19 +28,28 @@ public class TicketsTablePage extends Page {
 	
 	
 	private WebDriverWait wait = new WebDriverWait(driver, 10);
-	private String fieldDate;
+	private String fieldDateRow = "";
+	private String fieldDateColumn;
 
 	public TicketsTablePage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(this.driver, this);
 	}
 
-	public String getClickDate() {
-		return fieldDate;
+	public String getFieldDateRow() {
+		return fieldDateRow;
 	}
 
-	public void setClickDate(String clickDate) {
-		this.fieldDate = clickDate;
+	public void setFieldDateRow(String fieldDateRow) {
+		this.fieldDateRow = fieldDateRow;
+	}
+	
+	public String getFieldDateColumn() {
+		return fieldDateColumn;
+	}
+
+	public void setFieldDateColumn(String fieldDateColumn) {
+		this.fieldDateColumn = fieldDateColumn;
 	}
 
 	public void clickOnTicket(String availibleDate) {
@@ -49,11 +58,11 @@ public class TicketsTablePage extends Page {
 		List<WebElement> tickets = driver.findElements(ticketsInColumns);
 		
 		for (int i = 0; i < dateFields.size(); i++) {
-			if (dateFields.get(i).getAttribute("id").contains(fieldDate)) {
-				WebElement cost = tickets.get(i).findElement(By.className("price"));
-				if (cost != null) {
-					cost.click();
-					wait.until(ExpectedConditions.attributeToBe(cost, "class", "price selected"));
+			if (dateFields.get(i).getAttribute("id").contains(fieldDateRow)) {
+				WebElement price = tickets.get(i).findElement(By.className("price"));
+				if (price != null) {
+					price.click();
+					wait.until(ExpectedConditions.attributeToBe(price, "class", "price selected"));
 					clickOnNextButton();
 					break;
 				}
@@ -99,7 +108,7 @@ public class TicketsTablePage extends Page {
 		dates.remove(0);
 		List<WebElement> tickets = driver.findElements(ticketsInputs);
 		for (int i = 0; i < dates.size(); i++) {
-			if (dates.get(i).getAttribute("id").contains(fieldDate)) {
+			if (dates.get(i).getAttribute("id").contains(fieldDateRow)) {
 				for (int j = 0; j < datesInColumns.size(); j++) {
 					if (datesInColumns.get(j).getAttribute("id").contains(date)) {
 						String[] splitDate = date.split("_");

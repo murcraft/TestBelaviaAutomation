@@ -15,8 +15,7 @@ public class TestOneWay extends BaseTest {
 	private final String DESTINATION1 = "Ã»Õ— ";
 	private final String DESTINATION2 = "–»√¿";
 	private final String supportLink = "support@belavia.by";
-	
-	private SearchStep steps;
+	private final static int MONTH_RANGE = 3;
 
 	@BeforeMethod(description = "Init browser")
 	public void setUp() {
@@ -39,20 +38,10 @@ public class TestOneWay extends BaseTest {
 
 	@Test(priority = 3, description = "Fill date")
 	public void testChooseDates() {
-		step.chooseDate("10");
+		step.chooseDateInOneWay("10");
 		step.clickButtonSearch();
 	}
 	
-//	@Test(priority = 5, description = "go to seach results")
-//	public void testSearchTicketsResSet() {
-//		step.searchTickets();
-//	}
-	
-//	@Test(priority = 5, description = "Init browser")
-//	public void setUpParse() {
-//		stepic = new ParseTicketsStep();
-//	}
-//		
 	@AfterSuite(description = "Stop Browser")
 	public void stopBrowser() {
 		step.closeDriver();
